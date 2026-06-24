@@ -34,6 +34,7 @@ const commands = [
     .setDescription('Generate a custom role code (Admin only)')
     .addIntegerOption(o => o.setName('uses').setDescription('How many times can this code be redeemed?').setRequired(true).setMinValue(1).setMaxValue(100))
     .addUserOption(o => o.setName('user').setDescription('The user to send the code to via DM').setRequired(true))
+    .addStringOption(o => o.setName('message').setDescription('Optional message to include with the code').setRequired(false))
     .toJSON(),
 
   new SlashCommandBuilder()
