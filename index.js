@@ -183,6 +183,7 @@ client.on('interactionCreate', async (interaction) => {
 
     const uses = interaction.options.getInteger('uses');
     const targetUser = interaction.options.getUser('user');
+    const customMessage = interaction.options.getString('message');
     const code = generateCode();
     const codes = loadCodes();
 
@@ -197,19 +198,23 @@ client.on('interactionCreate', async (interaction) => {
 
     // Code per DM an den ausgewählten User schicken
     try {
-      await targetUser.send({
-        embeds: [new EmbedBuilder()
-          .setColor(0x9b59b6)
-          .setTitle('🎟️ You received a Custom Role Code!')
-          .setDescription(`An admin has sent you a code to create your own custom role!`)
-          .addFields(
-            { name: '🔑 Code', value: `\`\`\`${code}\`\`\``, inline: false },
-            { name: '🔄 Uses', value: `${uses}x`, inline: true },
-            { name: '📋 How to use', value: '`/redeem CODE YourRoleName Color`', inline: false }
-          )
-          .setFooter({ text: 'Use this code in the server to create your role!' })
-          .setTimestamp()]
-      });
+      const dmEmbed = new EmbedBuilder()
+        .setColor(0x9b59b6)
+        .setTitle('🎟️ You received a Custom Role Code!')
+        .setDescription(`An admin has sent you a code to create your own custom role!`)
+        .addFields(
+          { name: '🔑 Code', value: `\`\`\`${code}\`\`\``, inline: false },
+          { name: '🔄 Uses', value: `${uses}x`, inline: true },
+          { name: '📋 How to use', value: '`/redeem CODE YourRoleName Color`', inline: false }
+        )
+        .setFooter({ text: 'Use this code in the server to create your role!' })
+        .setTimestamp();
+
+      if (customMessage) {
+        dmEmbed.addFields({ name: '💬 Message', value: customMessage, inline: false });
+      }
+
+      await targetUser.send({ embeds: [dmEmbed] });
 
       await interaction.editReply({
         embeds: [new EmbedBuilder()
