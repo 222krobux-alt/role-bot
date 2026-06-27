@@ -170,19 +170,7 @@ client.on('interactionCreate', async (interaction) => {
   const cmd = interaction.commandName;
 
   // Admin check (außer redeem)
-  const { PermissionsBitField } = require('discord.js');
-
-  if (
-    cmd !== 'redeem' &&
-    cmd !== 'timeroles' &&
-    !isAdmin(interaction.user.id) &&
-    !interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)
-  ) {
-    return await interaction.reply({
-      embeds: [new EmbedBuilder().setColor(0xe74c3c).setTitle('❌ No Permission').setDescription('Only admins can use this command.')],
-      flags: MessageFlags.Ephemeral
-    });
-  }
+  if (cmd !== 'redeem' && cmd !== 'timeroles' && !isAdmin(interaction.user.id)) {
 
   // ── /generatecode ─────────────────────────────────────────────────────────
   if (cmd === 'generatecode') {
