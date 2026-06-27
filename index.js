@@ -171,6 +171,11 @@ client.on('interactionCreate', async (interaction) => {
 
   // Admin check (außer redeem)
   if (cmd !== 'redeem' && cmd !== 'timeroles' && !isAdmin(interaction.user.id)) {
+    return await interaction.reply({
+      embeds: [new EmbedBuilder().setColor(0xe74c3c).setTitle('❌ No Permission').setDescription('Only admins can use this command.')],
+      flags: MessageFlags.Ephemeral
+    });
+  }
 
   // ── /generatecode ─────────────────────────────────────────────────────────
   if (cmd === 'generatecode') {
